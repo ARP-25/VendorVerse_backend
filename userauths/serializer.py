@@ -13,8 +13,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['email'] = user.email
         token['full_name'] = user.profile.full_name
-        print(user.vendor.id)
         
+
         # Sicherstellen, dass Vendor nur hinzugefügt wird, wenn er existiert
         if hasattr(user, 'vendor') and user.vendor is not None:
             token['vendor_id'] = user.vendor.id

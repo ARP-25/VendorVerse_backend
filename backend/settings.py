@@ -41,6 +41,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 print(f"DEBUG: {DEBUG}")
+print(f"DEBUG: {DEBUG}")
 ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000']
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'

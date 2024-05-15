@@ -43,7 +43,7 @@ DEBUG = True
 print(f"DEBUG: {DEBUG}")
 print(f"DEBUG: {DEBUG}")
 ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000' , 'https://gregarious-piroshki-d98070.netlify.app',]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
@@ -186,13 +186,35 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Configure CORS
-# For development
+# For development and production
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://gregarious-piroshki-d98070.netlify.app",
+    "https://vendorversebackend-production.up.railway.app",
 ]
 
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

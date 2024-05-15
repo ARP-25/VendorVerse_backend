@@ -18,6 +18,10 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+
+import dj_database_url
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,29 +30,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 
-# List all environment variables
-for key, value in os.environ.items():
-    print("Here come the environment variables:")
-    print(f"{key}: {value}")
-    print("End of environment variables")
-
-TEST_VARIABLE_1 = os.getenv('TEST_VARIABLE')
-print(f"TEST_VARIABLE: {TEST_VARIABLE_1}")
-TEST_VARIABLE_2 = os.environ.get('TEST_VARIABLE_2')
-print(f"TEST_VARIABLE_2: {TEST_VARIABLE_2}")
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-print(f"SECRET_KEY: {SECRET_KEY}")
+
 
 if not SECRET_KEY:
     raise ValueError("The SECRET_KEY setting must not be empty.")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app']
+ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000']
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
@@ -125,7 +119,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

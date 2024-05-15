@@ -31,7 +31,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/']
+CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/']
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 
 # Application definition

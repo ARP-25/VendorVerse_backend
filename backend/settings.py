@@ -28,9 +28,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # List all environment variables
 for key, value in os.environ.items():
+    print("Here come the environment variables:")
     print(f"{key}: {value}")
+    print("End of environment variables")
 
-    
+TEST_VARIABLE_1 = os.getenv('TEST_VARIABLE')
+print(f"TEST_VARIABLE: {TEST_VARIABLE_1}")
+TEST_VARIABLE_2 = os.environ.get('TEST_VARIABLE_2')
+print(f"TEST_VARIABLE_2: {TEST_VARIABLE_2}")
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 print(f"SECRET_KEY: {SECRET_KEY}")

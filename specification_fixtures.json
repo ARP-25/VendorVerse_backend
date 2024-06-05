@@ -1,0 +1,146 @@
+[
+    {
+        "model": "store.specification",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "title": "Made in",
+            "content": "Germany"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 2,
+        "fields": {
+            "product": 1,
+            "title": "Camera Resolution",
+            "content": "12 Megapixels"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 3,
+        "fields": {
+            "product": 2,
+            "title": "Material",
+            "content": "100% Cotton"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 4,
+        "fields": {
+            "product": 3,
+            "title": "Author",
+            "content": "John Doe"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 5,
+        "fields": {
+            "product": 3,
+            "title": "Pages",
+            "content": "350"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 6,
+        "fields": {
+            "product": 1,
+            "title": "Battery Life",
+            "content": "24 Hours"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 7,
+        "fields": {
+            "product": 1,
+            "title": "Screen Size",
+            "content": "6.5 Inches"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 8,
+        "fields": {
+            "product": 2,
+            "title": "Fit",
+            "content": "Regular"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 9,
+        "fields": {
+            "product": 2,
+            "title": "Color",
+            "content": "Various"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 10,
+        "fields": {
+            "product": 3,
+            "title": "Genre",
+            "content": "Mystery"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 11,
+        "fields": {
+            "product": 4,
+            "title": "Power",
+            "content": "500 Watts"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 12,
+        "fields": {
+            "product": 4,
+            "title": "Capacity",
+            "content": "1.5 Liters"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 13,
+        "fields": {
+            "product": 5,
+            "title": "Material",
+            "content": "Plastic"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 14,
+        "fields": {
+            "product": 5,
+            "title": "Height",
+            "content": "15 cm"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 15,
+        "fields": {
+            "product": 6,
+            "title": "Size",
+            "content": "Standard"
+        }
+    },
+    {
+        "model": "store.specification",
+        "pk": 16,
+        "fields": {
+            "product": 6,
+            "title": "Material",
+            "content": "Synthetic Leather"
+        }
+    }
+]

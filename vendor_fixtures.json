@@ -1,0 +1,30 @@
+[
+    {
+        "model": "vendor.vendor",
+        "pk": 1,
+        "fields": {
+            "user": 2,
+            "image": "vendor/default.jpg",
+            "name": "John's Store",
+            "description": "A store owned by John Doe",
+            "mobile": "123456789",
+            "active": true,
+            "date": "2024-06-02T12:00:00Z",
+            "slug": "johns-store"
+        }
+    },
+    {
+        "model": "vendor.vendor",
+        "pk": 2,
+        "fields": {
+            "user": 3,
+            "image": "vendor/default.jpg",
+            "name": "Jane's Boutique",
+            "description": "A boutique owned by Jane Smith",
+            "mobile": "987654321",
+            "active": true,
+            "date": "2024-06-03T12:00:00Z",
+            "slug": "janes-boutique"
+        }
+    }
+]

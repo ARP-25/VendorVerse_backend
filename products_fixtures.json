@@ -1,0 +1,140 @@
+[
+    {
+        "model": "store.product",
+        "pk": 1,
+        "fields": {
+            "title": "Smartphone",
+            "image": "products/default.jpg",
+            "description": "A high-end smartphone",
+            "category": 1,
+            "price": "799.99",
+            "old_price": "899.99",
+            "shipping_amount": "15.00",
+            "stock_qty": 50,
+            "in_stock": true,
+            "status": "published",
+            "featured": false,
+            "views": 100,
+            "rating": 5,
+            "vendor": 1,
+            "pid": "Pabcdefg1",
+            "slug": "smartphone",
+            "date": "2024-06-01T12:00:00Z"
+        }
+    },
+    {
+        "model": "store.product",
+        "pk": 2,
+        "fields": {
+            "title": "T-Shirt",
+            "image": "products/default.jpg",
+            "description": "A comfortable cotton t-shirt",
+            "category": 2,
+            "price": "19.99",
+            "old_price": "29.99",
+            "shipping_amount": "5.00",
+            "stock_qty": 200,
+            "in_stock": true,
+            "status": "published",
+            "featured": false,
+            "views": 150,
+            "rating": 4,
+            "vendor": 2,
+            "pid": "Pabcdefg2",
+            "slug": "t-shirt",
+            "date": "2024-06-02T12:00:00Z"
+        }
+    },
+    {
+        "model": "store.product",
+        "pk": 3,
+        "fields": {
+            "title": "Novel",
+            "image": "products/default.jpg",
+            "description": "A gripping mystery novel",
+            "category": 3,
+            "price": "14.99",
+            "old_price": "19.99",
+            "shipping_amount": "3.00",
+            "stock_qty": 100,
+            "in_stock": true,
+            "status": "published",
+            "featured": false,
+            "views": 200,
+            "rating": 5,
+            "vendor": 1,
+            "pid": "Pabcdefg3",
+            "slug": "novel",
+            "date": "2024-06-03T12:00:00Z"
+        }
+    },
+    {
+        "model": "store.product",
+        "pk": 4,
+        "fields": {
+            "title": "Blender",
+            "image": "products/default.jpg",
+            "description": "A high-performance kitchen blender",
+            "category": 4,
+            "price": "99.99",
+            "old_price": "149.99",
+            "shipping_amount": "10.00",
+            "stock_qty": 75,
+            "in_stock": true,
+            "status": "published",
+            "featured": true,
+            "views": 120,
+            "rating": 4,
+            "vendor": 2,
+            "pid": "Pabcdefg4",
+            "slug": "blender",
+            "date": "2024-06-04T12:00:00Z"
+        }
+    },
+    {
+        "model": "store.product",
+        "pk": 5,
+        "fields": {
+            "title": "Action Figure",
+            "image": "products/default.jpg",
+            "description": "A collectible action figure",
+            "category": 5,
+            "price": "29.99",
+            "old_price": "39.99",
+            "shipping_amount": "7.00",
+            "stock_qty": 150,
+            "in_stock": true,
+            "status": "published",
+            "featured": true,
+            "views": 250,
+            "rating": 5,
+            "vendor": 1,
+            "pid": "Pabcdefg5",
+            "slug": "action-figure",
+            "date": "2024-06-05T12:00:00Z"
+        }
+    },
+    {
+        "model": "store.product",
+        "pk": 6,
+        "fields": {
+            "title": "Soccer Ball",
+            "image": "products/default.jpg",
+            "description": "A durable soccer ball for all weather conditions",
+            "category": 6,
+            "price": "24.99",
+            "old_price": "34.99",
+            "shipping_amount": "6.00",
+            "stock_qty": 100,
+            "in_stock": true,
+            "status": "published",
+            "featured": false,
+            "views": 180,
+            "rating": 4,
+            "vendor": 2,
+            "pid": "Pabcdefg6",
+            "slug": "soccer-ball",
+            "date": "2024-06-06T12:00:00Z"
+        }
+    }
+]

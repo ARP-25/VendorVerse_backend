@@ -1,0 +1,62 @@
+[
+    {
+        "model": "store.category",
+        "pk": 1,
+        "fields": {
+            "title": "Electronics",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "electronics"
+        }
+    },
+    {
+        "model": "store.category",
+        "pk": 2,
+        "fields": {
+            "title": "Clothing",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "clothing"
+        }
+    },
+    {
+        "model": "store.category",
+        "pk": 3,
+        "fields": {
+            "title": "Books",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "books"
+        }
+    },
+    {
+        "model": "store.category",
+        "pk": 4,
+        "fields": {
+            "title": "Home Appliances",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "home-appliances"
+        }
+    },
+    {
+        "model": "store.category",
+        "pk": 5,
+        "fields": {
+            "title": "Toys",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "toys"
+        }
+    },
+    {
+        "model": "store.category",
+        "pk": 6,
+        "fields": {
+            "title": "Sports Equipment",
+            "image": "category/default.jpg",
+            "active": true,
+            "slug": "sports-equipment"
+        }
+    }
+]

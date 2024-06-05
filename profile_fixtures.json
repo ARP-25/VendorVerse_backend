@@ -1,0 +1,53 @@
+[
+    {
+        "model": "userauths.profile",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "image": "default/default-user.jpg",
+            "full_name": "Admin User",
+            "about": "Admin profile description",
+            "gender": "Male",
+            "country": "Germany",
+            "state": "Berlin",
+            "city": "Berlin",
+            "address": "Admin Address",
+            "date": "2024-06-01T12:00:00Z",
+            "pid": "abcdefghij"
+        }
+    },
+    {
+        "model": "userauths.profile",
+        "pk": 2,
+        "fields": {
+            "user": 2,
+            "image": "default/default-user.jpg",
+            "full_name": "John Doe",
+            "about": "John's profile description",
+            "gender": "Male",
+            "country": "Germany",
+            "state": "Bavaria",
+            "city": "Munich",
+            "address": "John's Address",
+            "date": "2024-06-02T12:00:00Z",
+            "pid": "bcdefghijk"
+        }
+    },
+    {
+        "model": "userauths.profile",
+        "pk": 3,
+        "fields": {
+            "user": 3,
+            "image": "default/default-user.jpg",
+            "full_name": "Jane Smith",
+            "about": "Jane's profile description",
+            "gender": "Female",
+            "country": "Germany",
+            "state": "Hamburg",
+            "city": "Hamburg",
+            "address": "Jane's Address",
+            "date": "2024-06-03T12:00:00Z",
+            "pid": "cdefghijkl"
+        }
+    }
+]

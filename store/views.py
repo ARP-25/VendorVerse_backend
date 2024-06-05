@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-
+from django.db.models import Q
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
@@ -640,6 +640,9 @@ class SearchProductAPIView(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        query = self.request.GET.get('query')
-        products = Product.objects.filter(status='published', title__icontains=query)
+        query = self.request.GET.get('query', '')
+        products = Product.objects.filter(
+            Q(status='published') & 
+            (Q(title__icontains=query) | Q(description__icontains=query))
+        )
         return products

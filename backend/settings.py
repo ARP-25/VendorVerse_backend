@@ -85,6 +85,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
+    'backend.middleware.ProfilerMiddleware',  # Add this line
+
 ]
 
 
@@ -111,14 +113,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Print environment variables for debugging (temporary)
-print("Environment variables:")
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
+# print("Environment variables:")
+# for key, value in os.environ.items():
+#     print(f"{key}: {value}")
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-print(f"DATABASE_URL: {DATABASE_URL}")  # Debugging
+# print(f"DATABASE_URL: {DATABASE_URL}")  
 
 DATABASES = {
     'default': {

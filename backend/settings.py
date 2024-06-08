@@ -85,8 +85,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'backend.middleware.ProfilerMiddleware',  # Add this line
-
+    # 'backend.middleware.ProfilerMiddleware',  
 ]
 
 
@@ -120,7 +119,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-# print(f"DATABASE_URL: {DATABASE_URL}")  
+print(f"DATABASE_URL: {DATABASE_URL}")  
 
 DATABASES = {
     'default': {
@@ -321,7 +320,7 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": os.getenv('MAILGUN_SENDER_DOMAIN'),
 }
 
-FROM_EMAIL = 'angelo.pucci@web.de'
+FROM_EMAIL = 'angelo.pucci@outlook.de'
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
 

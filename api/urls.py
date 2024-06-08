@@ -21,11 +21,14 @@ urlpatterns = [
     path('products/<str:slug>/', store_views.ProductDetailAPIView.as_view(), name='product-detail'),
     path('cart-view/', store_views.CartAPIView.as_view(), name='cart-view'),
     path('cart-list/<str:cart_id>/<int:user_id>/', store_views.CartListAPIView.as_view(), name='cart-list'),
-    path('cart-list/<str:cart_id>/', store_views.CartListAPIView.as_view(), name='cart-list'),
+    path('cart-list/<str:cart_id>/', store_views.CartListAPIView.as_view()),
     path('cart-detail/<str:cart_id>/<int:user_id>/', store_views.CartDetailAPIView.as_view(), name='cart-detail'),
-    path('cart-detail/<str:cart_id>/', store_views.CartDetailAPIView.as_view(), name='cart-detail'),
+    path('cart-detail/<str:cart_id>/', store_views.CartDetailAPIView.as_view()),
     path('cart-delete/<str:cart_id>/<int:item_id>/<int:user_id>/', store_views.CartItemDeleteAPIView.as_view(), name='cart-delete'),
-    path('cart-delete/<str:cart_id>/<int:item_id>/', store_views.CartItemDeleteAPIView.as_view(), name='cart-delete'),
+    path('cart-delete/<str:cart_id>/<int:item_id>/', store_views.CartItemDeleteAPIView.as_view()),
+    # Cart Deletion after successfull checkout
+    path('cart-delete/<str:cart_id>/', store_views.CartDeleteAPIView.as_view()),
+    
     path('create-order/', store_views.CreateOrderAPIView.as_view(), name='cart-delete'),
     path('checkout/<str:order_id>/', store_views.CheckoutAPIView.as_view(), name='checkout'),
     path('coupon/', store_views.CouponAPIView.as_view(), name='coupon'),

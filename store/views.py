@@ -1,3 +1,4 @@
+import anymail
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
@@ -247,6 +248,21 @@ class CartItemDeleteAPIView(generics.DestroyAPIView):
             cart = get_object_or_404(Cart, id=item_id, cart_id=cart_id)
 
         return cart
+    
+
+class CartDeleteAPIView(generics.DestroyAPIView):
+    serializer_class = CartSerializer
+    lookup_field = 'cart_id'
+
+    def delete(self, request, *args, **kwargs):
+        cart_id = self.kwargs.get('cart_id')
+        carts = Cart.objects.filter(cart_id=cart_id)
+
+        if not carts.exists():
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        count, _ = carts.delete()  # Returns a tuple (number of objects deleted, a dictionary with details)
+        return Response({'detail': f'{count} items deleted.'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class CreateOrderAPIView(generics.CreateAPIView):
@@ -523,9 +539,11 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     subject = 'Order placed successfully!'
                     text_body = render_to_string('email/customer_order_confirmation.txt', context)
                     html_body = render_to_string('email/customer_order_confirmation.html', context)
+                    print("DEBUG_ ORDER_EMAIL ============= ", order.email)
                     msg = EmailMultiAlternatives(
                         subject = subject,
                         from_email = FROM_EMAIL,
+                        
                         to = [order.email],
                         body = text_body,
                     )
@@ -566,7 +584,12 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                             body = text_body,
                         )
                         msg.attach_alternative(html_body, 'text/html')
-                        msg.send()
+                        try:
+                            msg.send()
+                            logger.info("Email sent successfully to %s", order.email)
+                        except anymail.exceptions.AnymailRequestsAPIError as e:
+                            logger.error("Anymail error: %s", e.response.text)
+                            # logger.error("Anymail payload: %s", msg.message())
 
                     # Send Email to Buyer
                     context = {
@@ -576,6 +599,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     subject = 'Order placed successfully!'
                     text_body = render_to_string('email/customer_order_confirmation.txt', context)
                     html_body = render_to_string('email/customer_order_confirmation.html', context)
+                    print("DEBUG_ ORDER_EMAIL ============= ", order.email)
                     msg = EmailMultiAlternatives(
                         subject = subject,
                         from_email = FROM_EMAIL,
@@ -643,6 +667,6 @@ class SearchProductAPIView(generics.ListAPIView):
         query = self.request.GET.get('query', '')
         products = Product.objects.filter(
             Q(status='published') & 
-            (Q(title__icontains=query) | Q(description__icontains=query))
+            (Q(title__icontains=query) | Q(description__icontains=query) | Q(category__title__icontains=query))
         )
         return products

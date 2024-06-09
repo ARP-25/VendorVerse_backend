@@ -39,12 +39,21 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     raise ValueError("The SECRET_KEY setting must not be empty.")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1', 'https://main--vendorverse.netlify.app/']
-CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000' , 'https://main--vendorverse.netlify.app/',]
+DEBUG = False
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
+ALLOWED_HOSTS = [
+    'vendorversebackend-production.up.railway.app',
+    '127.0.0.1',
+    '127.0.0.1:8000',
+    'main--vendorverse.netlify.app'
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://vendorversebackend-production.up.railway.app',
+    'https://main--vendorverse.netlify.app',
+    'https://127.0.0.1:8000'
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -190,7 +199,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://gregarious-piroshki-d98070.netlify.app",
+    "https://main--vendorverse.netlify.app",
     "https://vendorversebackend-production.up.railway.app",
 ]
 

@@ -40,8 +40,8 @@ if not SECRET_KEY:
     raise ValueError("The SECRET_KEY setting must not be empty.")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000' , 'https://gregarious-piroshki-d98070.netlify.app',]
+ALLOWED_HOSTS = ['https://vendorversebackend-production.up.railway.app/', 'vendorversebackend-production.up.railway.app', '127.0.0.1:8000', '127.0.0.1', 'https://main--vendorverse.netlify.app/']
+CSRF_TRUSTED_ORIGINS = ['https://vendorversebackend-production.up.railway.app/', 'https://vendorversebackend-production.up.railway.app', 'https://127.0.0.1:8000' , 'https://main--vendorverse.netlify.app/',]
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
 

@@ -46,13 +46,14 @@ ALLOWED_HOSTS = [
     'vendorversebackend-production.up.railway.app',
     '127.0.0.1',
     '127.0.0.1:8000',
-    'main--vendorverse.netlify.app'
+    'main--vendorverse.netlify.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://vendorversebackend-production.up.railway.app',
     'https://main--vendorverse.netlify.app',
-    'https://127.0.0.1:8000'
+    'https://127.0.0.1:8000',
+    'https://vendorversebackend-production.up.railway.app/',
 ]
 # Application definition
 
@@ -127,7 +128,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+# DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = 'postgresql://postgres:IkfAEkChTEYwecCeDlBgVWtzmJzGJRrr@monorail.proxy.rlwy.net:31113/railway'
+
 print(f"DATABASE_URL: {DATABASE_URL}")  
 
 DATABASES = {

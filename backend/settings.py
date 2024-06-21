@@ -202,7 +202,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://main--vendorverse.netlify.app",
+    "https://vendorverse.netlify.app",
     "https://vendorversebackend-production.up.railway.app",
 ]
 

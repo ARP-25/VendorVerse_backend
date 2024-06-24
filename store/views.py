@@ -54,6 +54,12 @@ class CategoryListAPIView(generics.ListAPIView):
     serializer_class = CategorySerializer
     permission_classes = [AllowAny]
 
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        response["Access-Control-Allow-Origin"] = "https://vendorverse.netlify.app"
+        response["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+        response["Access-Control-Allow-Headers"] = "accept, accept-encoding, authorization, content-type, dnt, origin, user-agent, x-csrftoken, x-requested-with"
+        return response
 
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()

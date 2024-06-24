@@ -40,8 +40,11 @@ if not SECRET_KEY:
     raise ValueError("The SECRET_KEY setting must not be empty.")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 
+
+# Configure CORS
+# For development and production
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
 ALLOWED_HOSTS = [
     'vendorversebackend-production.up.railway.app',
     '127.0.0.1',
@@ -49,7 +52,6 @@ ALLOWED_HOSTS = [
     'main--vendorverse.netlify.app',
     'https://vendorverse.netlify.app',
 ]
-
 CSRF_TRUSTED_ORIGINS = [
     'https://vendorversebackend-production.up.railway.app',
     'https://main--vendorverse.netlify.app',
@@ -57,8 +59,38 @@ CSRF_TRUSTED_ORIGINS = [
     'https://vendorversebackend-production.up.railway.app/',
     'https://vendorverse.netlify.app',
 ]
-# Application definition
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://vendorverse.netlify.app",
+    "https://vendorversebackend-production.up.railway.app",
+]
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
+
+
+
+
+
+# Application definition
 INSTALLED_APPS = [
     'jazzmin',
 
@@ -198,36 +230,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Configure CORS
-# For development and production
-CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://vendorverse.netlify.app",
-    "https://vendorversebackend-production.up.railway.app",
-]
-
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -47,6 +47,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '127.0.0.1:8000',
     'main--vendorverse.netlify.app',
+    'https://vendorverse.netlify.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -54,6 +55,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://main--vendorverse.netlify.app',
     'https://127.0.0.1:8000',
     'https://vendorversebackend-production.up.railway.app/',
+    'https://vendorverse.netlify.app',
 ]
 # Application definition
 

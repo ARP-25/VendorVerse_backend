@@ -34,7 +34,7 @@ from .serializer import CouponSerializer
 from .serializer import NotificationSerializer
 from .serializer import ReviewSerializer
 
-from backend.settings import VENDORVERSE_FRONTEND_URL as frontend_url
+# from backend.settings import VENDORVERSE_FRONTEND_URL as frontend_url
 
 import logging
 

@@ -34,6 +34,8 @@ from .serializer import CouponSerializer
 from .serializer import NotificationSerializer
 from .serializer import ReviewSerializer
 
+from backend.settings import VENDORVERSE_FRONTEND_URL as frontend_url
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -444,8 +446,8 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
                     },
                 ],
                 mode='payment',
-                success_url='http://localhost:5173/payment-success/' + order.oid + '?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url = 'http://localhost:5173/payment-failed/' + '?session_id={CHECKOUT_SESSION_ID}',
+                success_url={frontend_url} + order.oid + '?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url = {frontend_url} + '?session_id={CHECKOUT_SESSION_ID}',
                 )
             order.stripe_session_id = checkout_session.id
             order.save()

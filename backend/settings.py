@@ -35,6 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
+VENDORVERSE_FRONTEND_URL = os.getenv('VENDORVERSE_FRONTEND_URL')
 
 if not SECRET_KEY:
     raise ValueError("The SECRET_KEY setting must not be empty.")

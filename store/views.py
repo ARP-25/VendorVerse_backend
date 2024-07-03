@@ -446,8 +446,10 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
                     },
                 ],
                 mode='payment',
-                success_url=f'https://vendorverse.netlify.app/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}',
-                cancel_url=f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}',
+                success_url=f'http://localhost:5173/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}',
+                cancel_url=f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}',
+                # success_url=f'https://vendorverse.netlify.app/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}',
+                # cancel_url=f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}',
                 )
             order.stripe_session_id = checkout_session.id
             order.save()

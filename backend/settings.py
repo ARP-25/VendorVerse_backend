@@ -30,27 +30,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 
-
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 
-
-
 # Log all environment variables
-print("Environment Variables:")
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
+# print("Environment Variables:")
+# for key, value in os.environ.items():
+#     print(f"{key}: {value}")
+
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 PAYPAL_CLIENT_ID = os.getenv('PAYPAL_CLIENT_ID')
 PAYPAL_SECRET_KEY = os.getenv('PAYPAL_SECRET_KEY')
 
-print(f"SECRET_KEY: {SECRET_KEY}")
-print(f"PAYPAL_CLIENT_ID: {PAYPAL_CLIENT_ID}")
-print(f"PAYPAL_SECRET_KEY: {PAYPAL_SECRET_KEY}")
 
+# print(f"SECRET_KEY: {SECRET_KEY}")
+# print(f"PAYPAL_CLIENT_ID: {PAYPAL_CLIENT_ID}")
+# print(f"PAYPAL_SECRET_KEY: {PAYPAL_SECRET_KEY}")
 
 
 if not SECRET_KEY:

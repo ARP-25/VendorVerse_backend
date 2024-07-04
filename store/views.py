@@ -34,8 +34,6 @@ from .serializer import CouponSerializer
 from .serializer import NotificationSerializer
 from .serializer import ReviewSerializer
 
-# from backend.settings import VENDORVERSE_FRONTEND_URL as frontend_url
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -419,9 +417,9 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
     serializer_class = CartOrderSerializer
     queryset = CartOrder.objects.all()
     permission_classes = (AllowAny,)
+
     stripe.api_key = stripe_secret_key
-    # print(f"stripe_secret_key: {stripe_secret_key}")
-    # print(f"stripe_public_key: {stripe_public_key}")
+
     def create(self, request, *args, **kwargs):
         order_oid = self.kwargs.get('order_oid')
         order = get_object_or_404(CartOrder, oid=order_oid)
@@ -429,11 +427,20 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
         if not order:
             return Response({'message': 'Order not found!'}, status=status.HTTP_404_NOT_FOUND)
         
+
+        # frontend production server
+        success_url = f'https://vendorverse.netlify.app/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        cancel_url = f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+
+        # frontend development server
+        # success_url = f'http://localhost:5173/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        # cancel_url = f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+
         try:
             checkout_session = stripe.checkout.Session.create(
-                customer_email = order.email,
-                payment_method_types = ['card'],
-                line_items = [
+                customer_email=order.email,
+                payment_method_types=['card'],
+                line_items=[
                     {
                         'price_data': {
                             'currency': 'usd',
@@ -446,16 +453,13 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
                     },
                 ],
                 mode='payment',
-                success_url=f'http://localhost:5173/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}',
-                cancel_url=f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}',
-                # success_url=f'https://vendorverse.netlify.app/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}',
-                # cancel_url=f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}',
-                )
+                success_url=success_url,
+                cancel_url=cancel_url,
+            )
             order.stripe_session_id = checkout_session.id
             order.save()
-
             return redirect(checkout_session.url, code=302)
-        
+
         except stripe.error.StripeError as e:
             return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
             

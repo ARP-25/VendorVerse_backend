@@ -638,7 +638,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         logger.error("Anymail error when sending to buyer: %s", e.response.text)
                         return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-                    return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
+                    return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'message': 'Already paid!'}, status=status.HTTP_200_OK)
 

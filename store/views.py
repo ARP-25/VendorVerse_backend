@@ -504,7 +504,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                 'Authorization': f'Bearer {get_access_token(PAYPAL_CLIENT_ID, PAYPAL_SECRET_KEY)}'
             }
             response = requests.get(paypal_api_url, headers=headers)
-            
+
             logger.debug("PayPal API response: %s", response.json())
 
             if response.status_code == 200:
@@ -538,6 +538,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                             )
                             msg.attach_alternative(html_body, 'text/html')
                             try:
+                                logger.debug("Sending email to vendor %s with context: %s", o.vendor.user.email, context)
                                 msg.send()
                                 logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
                             except AnymailRequestsAPIError as e:
@@ -560,6 +561,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         )
                         msg.attach_alternative(html_body, 'text/html')
                         try:
+                            logger.debug("Sending email to buyer %s with context: %s", order.email, context)
                             msg.send()
                             logger.info("Email sent successfully to buyer %s", order.email)
                         except AnymailRequestsAPIError as e:
@@ -606,6 +608,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         )
                         msg.attach_alternative(html_body, 'text/html')
                         try:
+                            logger.debug("Sending email to vendor %s with context: %s", o.vendor.user.email, context)
                             msg.send()
                             logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
                         except AnymailRequestsAPIError as e:
@@ -628,6 +631,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     )
                     msg.attach_alternative(html_body, 'text/html')
                     try:
+                        logger.debug("Sending email to buyer %s with context: %s", order.email, context)
                         msg.send()
                         logger.info("Email sent successfully to buyer %s", order.email)
                     except AnymailRequestsAPIError as e:

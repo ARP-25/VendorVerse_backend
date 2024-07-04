@@ -1,4 +1,4 @@
-import anymail
+from anymail.exceptions import AnymailRequestsAPIError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
@@ -491,12 +491,10 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         session_id = payload['session_id']
         paypal_order_id = payload['paypal_order_id']
 
-        print("Paypal Order ID ===", paypal_order_id)
+        logger.debug("Received payload: %s", payload)
 
         order = CartOrder.objects.filter(oid=order_oid).first()
         order_items = CartOrderItem.objects.filter(order=order)
-
-       
 
         # Paypal Payment
         if paypal_order_id != 'null':
@@ -507,6 +505,8 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
             }
             response = requests.get(paypal_api_url, headers=headers)
             
+            logger.debug("PayPal API response: %s", response.json())
+
             if response.status_code == 200:
                 paypal_order_data = response.json()
                 paypal_payment_status = paypal_order_data['status']
@@ -515,7 +515,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         order.payment_status = 'paid'
                         order.save()
                         # Send Notification to Customers
-                        if order.buyer != None:
+                        if order.buyer:
                             send_notification(user=order.buyer, order=order)
                         # Send Notification to Vendors
                         for o in order_items:
@@ -531,33 +531,44 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                             text_body = render_to_string('email/vendor_sale.txt', context)
                             html_body = render_to_string('email/vendor_sale.html', context)
                             msg = EmailMultiAlternatives(
-                                subject = subject,
-                                from_email = FROM_EMAIL,
-                                to = [o.vendor.user.email],
-                                body = text_body,
+                                subject=subject,
+                                from_email=FROM_EMAIL,
+                                to=[o.vendor.user.email],
+                                body=text_body,
                             )
                             msg.attach_alternative(html_body, 'text/html')
-                            msg.send()
+                            try:
+                                msg.send()
+                                logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
+                            except AnymailRequestsAPIError as e:
+                                logger.error("Anymail error when sending to vendor: %s", e.response.text)
 
-                    # Send Email to Buyer
-                    context = {
-                        'order': order,
-                        'order_items': order_items,
-                    }
-                    subject = 'Order placed successfully!'
-                    text_body = render_to_string('email/customer_order_confirmation.txt', context)
-                    html_body = render_to_string('email/customer_order_confirmation.html', context)
-                    print("DEBUG_ ORDER_EMAIL ============= ", order.email)
-                    msg = EmailMultiAlternatives(
-                        subject = subject,
-                        from_email = FROM_EMAIL,
-                        
-                        to = [order.email],
-                        body = text_body,
-                    )
-                    msg.attach_alternative(html_body, 'text/html')
-                    msg.send()
-                    return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
+                        # Send Email to Buyer
+                        context = {
+                            'order': order,
+                            'order_items': order_items,
+                        }
+                        subject = 'Order placed successfully!'
+                        text_body = render_to_string('email/customer_order_confirmation.txt', context)
+                        html_body = render_to_string('email/customer_order_confirmation.html', context)
+                        logger.debug("DEBUG_ORDER_EMAIL ============= %s", order.email)
+                        msg = EmailMultiAlternatives(
+                            subject=subject,
+                            from_email=FROM_EMAIL,
+                            to=[order.email],
+                            body=text_body,
+                        )
+                        msg.attach_alternative(html_body, 'text/html')
+                        try:
+                            msg.send()
+                            logger.info("Email sent successfully to buyer %s", order.email)
+                        except AnymailRequestsAPIError as e:
+                            logger.error("Anymail error when sending to buyer: %s", e.response.text)
+                            return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                        return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({'message': 'Already paid!'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'message': 'Your invoice is unpaid'}, status=status.HTTP_200_OK)
 
@@ -565,12 +576,14 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         if session_id != 'null':
             session = stripe.checkout.Session.retrieve(session_id)
 
+            logger.debug("Stripe session data: %s", session)
+
             if session.payment_status == 'paid':
                 if order.payment_status == 'pending':
                     order.payment_status = 'paid'
                     order.save()
                     # Send Notification to Customers
-                    if order.buyer != None:
+                    if order.buyer:
                         send_notification(user=order.buyer, order=order)
                     # Send Notification to Vendors
                     for o in order_items:
@@ -586,18 +599,17 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         text_body = render_to_string('email/vendor_sale.txt', context)
                         html_body = render_to_string('email/vendor_sale.html', context)
                         msg = EmailMultiAlternatives(
-                            subject = subject,
-                            from_email = FROM_EMAIL,
-                            to = [o.vendor.user.email],
-                            body = text_body,
+                            subject=subject,
+                            from_email=FROM_EMAIL,
+                            to=[o.vendor.user.email],
+                            body=text_body,
                         )
                         msg.attach_alternative(html_body, 'text/html')
                         try:
                             msg.send()
-                            logger.info("Email sent successfully to %s", order.email)
-                        except anymail.exceptions.AnymailRequestsAPIError as e:
-                            logger.error("Anymail error: %s", e.response.text)
-                            # logger.error("Anymail payload: %s", msg.message())
+                            logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
+                        except AnymailRequestsAPIError as e:
+                            logger.error("Anymail error when sending to vendor: %s", e.response.text)
 
                     # Send Email to Buyer
                     context = {
@@ -607,31 +619,36 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     subject = 'Order placed successfully!'
                     text_body = render_to_string('email/customer_order_confirmation.txt', context)
                     html_body = render_to_string('email/customer_order_confirmation.html', context)
-                    print("DEBUG_ ORDER_EMAIL ============= ", order.email)
+                    logger.debug("DEBUG_ORDER_EMAIL ============= %s", order.email)
                     msg = EmailMultiAlternatives(
-                        subject = subject,
-                        from_email = FROM_EMAIL,
-                        to = [order.email],
-                        body = text_body,
+                        subject=subject,
+                        from_email=FROM_EMAIL,
+                        to=[order.email],
+                        body=text_body,
                     )
                     msg.attach_alternative(html_body, 'text/html')
-                    msg.send()
-                    return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
+                    try:
+                        msg.send()
+                        logger.info("Email sent successfully to buyer %s", order.email)
+                    except AnymailRequestsAPIError as e:
+                        logger.error("Anymail error when sending to buyer: %s", e.response.text)
+                        return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                    return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'message': 'Already paid!'}, status=status.HTTP_200_OK)
-                
+
             elif session.payment_status == 'cancelled':
                 return Response({'message': 'Payment Cancelled!'}, status=status.HTTP_400_BAD_REQUEST)
-            
+
             elif session.payment_status == 'unpaid':
                 return Response({'message': 'Payment Unpaid!'}, status=status.HTTP_400_BAD_REQUEST)
-            
+
             else:
-                return Response({'message': 'An error occured, try again...'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': 'An error occurred, try again...'}, status=status.HTTP_400_BAD_REQUEST)
 
         else:
             return Response({'message': 'Session ID not found!'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class ReviewListAPIView(generics.ListCreateAPIView):

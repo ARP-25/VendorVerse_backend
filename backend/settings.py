@@ -12,22 +12,20 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
 
 # Load Environment Variables
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
-import dj_database_url
+# logging (for debugging)
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -345,7 +343,9 @@ stripe_public_key = os.getenv('STRIPE_PUBLIC_KEY')
 MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
 MAILGUN_SENDER_DOMAIN = os.getenv('MAILGUN_SENDER_DOMAIN')
 
-# ANYMAIL Configuration
+if not MAILGUN_API_KEY or not MAILGUN_SENDER_DOMAIN:
+    logger.error("Mailgun API key or sender domain not set in environment variables.")
+
 ANYMAIL = {
     "MAILGUN_API_KEY": os.getenv('MAILGUN_API_KEY'),
     "MAILGUN_SENDER_DOMAIN": os.getenv('MAILGUN_SENDER_DOMAIN'),

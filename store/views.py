@@ -16,7 +16,7 @@ import stripe.error
 from userauths.models import User
 
 from decimal import Decimal
-
+import time
 import stripe
 import requests
 
@@ -429,12 +429,12 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
         
 
         # frontend production server
-        success_url = f'https://vendorverse.netlify.app/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
-        cancel_url = f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+        # success_url = f'https://vendorverse.netlify.app/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        # cancel_url = f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
 
         # frontend development server
-        # success_url = f'http://localhost:5173/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
-        # cancel_url = f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+        success_url = f'http://localhost:5173/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        cancel_url = f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
 
         try:
             checkout_session = stripe.checkout.Session.create(
@@ -483,6 +483,20 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
     serializer_class = CartOrderSerializer
     queryset = CartOrder.objects.all()
     permission_classes = (AllowAny,)
+
+    def send_email_with_retry(self, msg, retries=3, delay=2):
+        for attempt in range(retries):
+            try:
+                msg.send()
+                print(f"Email sent successfully to {msg.to}")
+                return
+            except AnymailRequestsAPIError as e:
+                print(f"Anymail error when sending email: {e.response.text}")
+                if e.response.status_code == 403:  # Forbidden error
+                    if attempt < retries - 1:
+                        time.sleep(delay)  # Wait before retrying
+                    else:
+                        raise e  # Raise the error after the final attempt
 
     def create(self, request, *args, **kwargs):
         payload = request.data
@@ -539,8 +553,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                             msg.attach_alternative(html_body, 'text/html')
                             try:
                                 print(f"Sending email to vendor {o.vendor.user.email} with context: {context}")
-                                msg.send()
-                                print(f"Email sent successfully to vendor {o.vendor.user.email}")
+                                self.send_email_with_retry(msg)
                             except AnymailRequestsAPIError as e:
                                 print(f"Anymail error when sending to vendor: {e.response.text}")
 
@@ -562,8 +575,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         msg.attach_alternative(html_body, 'text/html')
                         try:
                             print(f"Sending email to buyer {order.email} with context: {context}")
-                            msg.send()
-                            print(f"Email sent successfully to buyer {order.email}")
+                            self.send_email_with_retry(msg)
                         except AnymailRequestsAPIError as e:
                             print(f"Anymail error when sending to buyer: {e.response.text}")
                             return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -609,8 +621,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         msg.attach_alternative(html_body, 'text/html')
                         try:
                             print(f"Sending email to vendor {o.vendor.user.email} with context: {context}")
-                            msg.send()
-                            print(f"Email sent successfully to vendor {o.vendor.user.email}")
+                            self.send_email_with_retry(msg)
                         except AnymailRequestsAPIError as e:
                             print(f"Anymail error when sending to vendor: {e.response.text}")
 
@@ -632,13 +643,12 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     msg.attach_alternative(html_body, 'text/html')
                     try:
                         print(f"Sending email to buyer {order.email} with context: {context}")
-                        msg.send()
-                        print(f"Email sent successfully to buyer {order.email}")
+                        self.send_email_with_retry(msg)
                     except AnymailRequestsAPIError as e:
                         print(f"Anymail error when sending to buyer: {e.response.text}")
                         return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-                    return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
+                    return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'message': 'Already paid!'}, status=status.HTTP_200_OK)
 
@@ -653,7 +663,6 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
 
         else:
             return Response({'message': 'Session ID not found!'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ReviewListAPIView(generics.ListCreateAPIView):
     queryset = Review.objects.all()

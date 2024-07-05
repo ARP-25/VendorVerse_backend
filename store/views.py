@@ -505,7 +505,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         session_id = payload['session_id']
         paypal_order_id = payload['paypal_order_id']
 
-        print("Received payload:", payload)
+        # print("Received payload:", payload)
 
         order = CartOrder.objects.filter(oid=order_oid).first()
         order_items = CartOrderItem.objects.filter(order=order)
@@ -590,7 +590,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         if session_id != 'null':
             session = stripe.checkout.Session.retrieve(session_id)
 
-            print("Stripe session data:", session)
+            # print("Stripe session data:", session)
 
             if session.payment_status == 'paid':
                 if order.payment_status == 'pending':
@@ -648,7 +648,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         print(f"Anymail error when sending to buyer: {e.response.text}")
                         return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-                    return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
+                    return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
                 else:
                     return Response({'message': 'Already paid!'}, status=status.HTTP_200_OK)
 

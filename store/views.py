@@ -429,12 +429,12 @@ class StripeCheckoutAPIView(generics.CreateAPIView):
         
 
         # frontend production server
-        # success_url = f'https://vendorverse.netlify.app/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
-        # cancel_url = f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+        success_url = f'https://vendorverse.netlify.app/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        cancel_url = f'https://vendorverse.netlify.app/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
 
         # frontend development server
-        success_url = f'http://localhost:5173/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
-        cancel_url = f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
+        # success_url = f'http://localhost:5173/payment-success/{order.oid}?session_id={{CHECKOUT_SESSION_ID}}'
+        # cancel_url = f'http://localhost:5173/payment-failed/?session_id={{CHECKOUT_SESSION_ID}}'
 
         try:
             checkout_session = stripe.checkout.Session.create(

@@ -491,7 +491,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         session_id = payload['session_id']
         paypal_order_id = payload['paypal_order_id']
 
-        logger.debug("Received payload: %s", payload)
+        print("Received payload:", payload)
 
         order = CartOrder.objects.filter(oid=order_oid).first()
         order_items = CartOrderItem.objects.filter(order=order)
@@ -505,7 +505,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
             }
             response = requests.get(paypal_api_url, headers=headers)
 
-            logger.debug("PayPal API response: %s", response.json())
+            print("PayPal API response:", response.json())
 
             if response.status_code == 200:
                 paypal_order_data = response.json()
@@ -538,11 +538,11 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                             )
                             msg.attach_alternative(html_body, 'text/html')
                             try:
-                                logger.debug("Sending email to vendor %s with context: %s", o.vendor.user.email, context)
+                                print(f"Sending email to vendor {o.vendor.user.email} with context: {context}")
                                 msg.send()
-                                logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
+                                print(f"Email sent successfully to vendor {o.vendor.user.email}")
                             except AnymailRequestsAPIError as e:
-                                logger.error("Anymail error when sending to vendor: %s", e.response.text)
+                                print(f"Anymail error when sending to vendor: {e.response.text}")
 
                         # Send Email to Buyer
                         context = {
@@ -552,7 +552,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         subject = 'Order placed successfully!'
                         text_body = render_to_string('email/customer_order_confirmation.txt', context)
                         html_body = render_to_string('email/customer_order_confirmation.html', context)
-                        logger.debug("DEBUG_ORDER_EMAIL ============= %s", order.email)
+                        print("DEBUG_ORDER_EMAIL =", order.email)
                         msg = EmailMultiAlternatives(
                             subject=subject,
                             from_email=FROM_EMAIL,
@@ -561,11 +561,11 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         )
                         msg.attach_alternative(html_body, 'text/html')
                         try:
-                            logger.debug("Sending email to buyer %s with context: %s", order.email, context)
+                            print(f"Sending email to buyer {order.email} with context: {context}")
                             msg.send()
-                            logger.info("Email sent successfully to buyer %s", order.email)
+                            print(f"Email sent successfully to buyer {order.email}")
                         except AnymailRequestsAPIError as e:
-                            logger.error("Anymail error when sending to buyer: %s", e.response.text)
+                            print(f"Anymail error when sending to buyer: {e.response.text}")
                             return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                         return Response({'message': 'Payment Successful!'}, status=status.HTTP_200_OK)
@@ -578,7 +578,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
         if session_id != 'null':
             session = stripe.checkout.Session.retrieve(session_id)
 
-            logger.debug("Stripe session data: %s", session)
+            print("Stripe session data:", session)
 
             if session.payment_status == 'paid':
                 if order.payment_status == 'pending':
@@ -608,11 +608,11 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                         )
                         msg.attach_alternative(html_body, 'text/html')
                         try:
-                            logger.debug("Sending email to vendor %s with context: %s", o.vendor.user.email, context)
+                            print(f"Sending email to vendor {o.vendor.user.email} with context: {context}")
                             msg.send()
-                            logger.info("Email sent successfully to vendor %s", o.vendor.user.email)
+                            print(f"Email sent successfully to vendor {o.vendor.user.email}")
                         except AnymailRequestsAPIError as e:
-                            logger.error("Anymail error when sending to vendor: %s", e.response.text)
+                            print(f"Anymail error when sending to vendor: {e.response.text}")
 
                     # Send Email to Buyer
                     context = {
@@ -622,7 +622,7 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     subject = 'Order placed successfully!'
                     text_body = render_to_string('email/customer_order_confirmation.txt', context)
                     html_body = render_to_string('email/customer_order_confirmation.html', context)
-                    logger.debug("DEBUG_ORDER_EMAIL ============= %s", order.email)
+                    print("DEBUG_ORDER_EMAIL =", order.email)
                     msg = EmailMultiAlternatives(
                         subject=subject,
                         from_email=FROM_EMAIL,
@@ -631,11 +631,11 @@ class PaymentSuccessAPIView(generics.CreateAPIView):
                     )
                     msg.attach_alternative(html_body, 'text/html')
                     try:
-                        logger.debug("Sending email to buyer %s with context: %s", order.email, context)
+                        print(f"Sending email to buyer {order.email} with context: {context}")
                         msg.send()
-                        logger.info("Email sent successfully to buyer %s", order.email)
+                        print(f"Email sent successfully to buyer {order.email}")
                     except AnymailRequestsAPIError as e:
-                        logger.error("Anymail error when sending to buyer: %s", e.response.text)
+                        print(f"Anymail error when sending to buyer: {e.response.text}")
                         return Response({'message': 'Failed to send email, please try again later.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
                     return Response({'message': 'Payment Successfull!'}, status=status.HTTP_200_OK)
